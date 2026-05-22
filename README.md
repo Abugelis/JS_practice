@@ -61,7 +61,7 @@ This repository is focused on improving understanding of:
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - HTML5
 - CSS3
