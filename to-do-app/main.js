@@ -33,19 +33,35 @@ function displayTasks(){
     tasks.forEach((task)=>{
         let taskRow = document.createElement("div");
         let para = document.createElement("p");
+        
         let deleteBtn = document.createElement("button");
         deleteBtn.textContent = "Delete";
         deleteBtn.value = task.taskId;
+
+        let taskCompleted = document.createElement("button");
+        if(task.taskCompleted === true){
+            taskCompleted.textContent = "Task Completed"
+        }else {
+            taskCompleted.textContent = "Task Incomplete"
+        }
+        taskCompleted.value = task.taskId;        
         
+       
+       
         para.append(task.taskName);
         
         taskDisplay.appendChild(taskRow);
 
         taskRow.appendChild(para)
         taskRow.appendChild(deleteBtn);
+        taskRow.appendChild(taskCompleted);
 
         deleteBtn.addEventListener("click", ()=>{
             deleteTask(task.taskId);
+        });
+
+        taskCompleted.addEventListener("click", ()=>{
+            updateTask(task.taskId);
         });
     });
 }
@@ -55,5 +71,16 @@ function deleteTask(taskId) {
     let newTasks = tasks.filter((task)=> task.taskId !== taskId);
     tasks = newTasks;
     taskDisplay.innerHTML = "";
+    displayTasks();
+}
+
+// update task. flip taskCompleted boolean (toggle) and re-render
+function updateTask(taskId) {
+    tasks.forEach((task) => {
+        if(task.taskId === taskId ){
+            task.taskCompleted = !task.taskCompleted;
+        }
+    });
+
     displayTasks();
 }
