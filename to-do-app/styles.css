@@ -119,3 +119,8 @@ button:hover {
 .display-tasks div p {
     color: red;
 }
+
+.display-tasks div p.completed {
+    text-decoration: line-through;
+    color: green;
+}
