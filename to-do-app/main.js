@@ -3,7 +3,9 @@ let taskInput = document.getElementById("task-input");
 // initialize button to add task
 let addTaskBtn = document.getElementById("add-task-btn");
 // initialize task display element
-let taskDisplay = document.getElementById("display-tasks");
+let toDoDisplay = document.getElementById("to-do-tasks");
+let activeTasksDisplay = document.getElementById("active-tasks");
+let completedTasksDisplay = document.getElementById("completed-tasks");
 
 // Initialize task array 
 let tasks = []; 
@@ -22,14 +24,16 @@ function createTask() {
     let task = {
         taskId : Date.now(),
         taskName : taskInput.value,
-        taskCompleted : false
+        taskStatus: "toDo"
     }
     return task;
 }
 
 // clear element that displays tasks. loop through tasks and add them to dom along with the button to delete task
 function displayTasks(){
-    taskDisplay.innerHTML  = "";
+    toDoDisplay.innerHTML  = "";
+    activeTasksDisplay.innerHTML = "";
+    completedTasksDisplay.innerHTML = "";
 
     tasks.forEach((task)=>{
         let taskRow = document.createElement("div");
@@ -39,30 +43,33 @@ function displayTasks(){
         deleteBtn.textContent = "Delete";
         deleteBtn.value = task.taskId;
 
-        let taskCompleted = document.createElement("button");
-        if(task.taskCompleted === true){
-            taskCompleted.textContent = "Task Completed";
-            para.classList.add("completed");
-        }else {
-            taskCompleted.textContent = "Task Incomplete";
+        let statusBtn = document.createElement("button");
+        
+        
+        if(task.taskStatus === "toDo"){
+            statusBtn.textContent = "Start Task";
+            toDoDisplay.appendChild(taskRow);
         }
-        taskCompleted.value = task.taskId;        
+        else if(task.taskStatus === "active"){
+            statusBtn.textContent = "Complete Task";
+            activeTasksDisplay.appendChild(taskRow);
+        }
+        else if (task.taskStatus === "completed"){
+            statusBtn.textContent = "Reset Task";
+            completedTasksDisplay.appendChild(taskRow);
+        }    
         
-       
-       
         para.append(task.taskName);
-        
-        taskDisplay.appendChild(taskRow);
 
         taskRow.appendChild(para)
         taskRow.appendChild(deleteBtn);
-        taskRow.appendChild(taskCompleted);
+        taskRow.appendChild(statusBtn);
 
         deleteBtn.addEventListener("click", ()=>{
             deleteTask(task.taskId);
         });
 
-        taskCompleted.addEventListener("click", ()=>{
+        statusBtn.addEventListener("click", ()=>{
             updateTask(task.taskId);
         });
     });
@@ -72,17 +79,25 @@ function displayTasks(){
 function deleteTask(taskId) {
     let newTasks = tasks.filter((task)=> task.taskId !== taskId);
     tasks = newTasks;
-    taskDisplay.innerHTML = "";
+
 
     saveTasks();
     displayTasks();
 }
 
-// update task. flip taskCompleted boolean (toggle) and re-render
+// update task. change status
 function updateTask(taskId) {
     tasks.forEach((task) => {
         if(task.taskId === taskId ){
-            task.taskCompleted = !task.taskCompleted;
+            if(task.taskStatus === "toDo"){
+                task.taskStatus = "active"
+            }
+            else if (task.taskStatus === "active"){
+                task.taskStatus = "completed"
+            }
+            else {
+                task.taskStatus = "toDo"
+            }
         }
     });
 
