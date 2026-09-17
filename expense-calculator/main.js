@@ -11,9 +11,13 @@ const navButtons = document.querySelectorAll(".nav-item");
 
 const categoryColors = {
     food: "#f97316",
+    smokes: "#895129",
+    fuel: "#069494",
     bills: "#3b82f6",
     travel: "#22c55e",
     entertainment: "#a855f7",
+    cat_food: "#f403fc",
+    savings: "#144f11",
     general: "#94a3b8",
     once_off: "#eab308"
 };
